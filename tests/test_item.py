@@ -11,7 +11,7 @@ def test_calculate_total_price():
 
 def test_apply_discount():
     Item.pay_rate -= 0.1
-    Item.apply_discount(item1)
-    Item.apply_discount(item2)
+    item1.apply_discount()
+    item2.apply_discount()
     assert item1.price == 107.55
     assert item2.price == 54.45
