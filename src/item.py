@@ -47,9 +47,23 @@ class Item:
 
     @classmethod
     def instantiate_from_csv(cls, csvfile):
+        """
+        Инициализирует экземпляры класса `Item` данными из файла
+        :param csvfile: файл .csv с данными о товарах
+        :return: None
+        """
         path = os.path.join('../', csvfile)
         Item.all.clear()
         with open(path, newline='', encoding='windows-1251') as file:
             reader = DictReader(file)
             for dictionary in reader:
                 cls(dictionary['name'], dictionary['price'], dictionary['quantity'])
+
+    @staticmethod
+    def string_to_number(string) -> int:
+        """
+        Возвращает число из числа-строки
+        :param string: строка
+        :return: число
+        """
+        return int(float(string))
