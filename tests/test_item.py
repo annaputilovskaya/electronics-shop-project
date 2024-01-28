@@ -28,3 +28,21 @@ def test_name(items):
     assert items[0].name == 'Суперсмарт'
     items[0].name = 'Смартфон'
     assert items[0].name == 'Смартфон'
+
+
+def test_string_to_number():
+    assert Item.string_to_number('5') == 5
+    assert Item.string_to_number('5.0') == 5
+    assert Item.string_to_number('5.5') == 5
+
+
+def test_string_to_number_not_number():
+    with pytest.raises(ValueError):
+        Item.string_to_number('')
+
+
+def test_instantiate_from_csv():
+    Item.instantiate_from_csv('electronics-shop-project/src/items.csv')
+    assert len(Item.all) == 5
+    item1 = Item.all[0]
+    assert item1.name == 'Смартфон'
