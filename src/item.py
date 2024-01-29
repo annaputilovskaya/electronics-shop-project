@@ -23,6 +23,18 @@ class Item:
 
         Item.all.append(self)
 
+    def __repr__(self):
+        """
+        Отображает информацию об объекте класса для отладки
+        """
+        return f"{self.__class__.__name__}('{self.__name}', {self.price}, {self.quantity})"
+
+    def __str__(self):
+        """
+        Отображает информацию об объекте класса для пользователей
+        """
+        return f'{self.__name}'
+
     @property
     def name(self):
         return self.__name
@@ -57,7 +69,11 @@ class Item:
         with open(path, newline='', encoding='windows-1251') as file:
             reader = DictReader(file)
             for dictionary in reader:
-                cls(dictionary['name'], dictionary['price'], dictionary['quantity'])
+                cls(
+                    dictionary['name'],
+                    Item.string_to_number(dictionary['price']),
+                    Item.string_to_number(dictionary['quantity'])
+                )
 
     @staticmethod
     def string_to_number(string) -> int:
