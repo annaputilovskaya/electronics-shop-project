@@ -16,14 +16,14 @@ def test_initial(phone1):
     assert phone1.number_of_sim == 2
 
 
-def test_incorrect_number_of_sim_not_positive():
+def test_number_of_sim_not_positive(phone1):
     with pytest.raises(ValueError):
-        Phone.incorrect_number_of_sim(0)
+        phone1.number_of_sim = 0
 
 
-def test_incorrect_number_of_sim_float():
+def test_number_of_sim_float(phone1):
     with pytest.raises(ValueError):
-        Phone.incorrect_number_of_sim(2.5)
+        phone1.number_of_sim = 2.5
 
 
 def test_number_of_sim(phone1):
