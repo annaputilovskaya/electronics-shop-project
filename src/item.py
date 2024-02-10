@@ -90,6 +90,6 @@ class Item:
         :param other: Другой вид товара
         :return: Количество складываемых товаров
         """
-        if not isinstance(other, self.__class__):
+        if not isinstance(other, Item):
             raise TypeError("Сложение данных объектов невозможно")
         return self.quantity + other.quantity
