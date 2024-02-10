@@ -11,7 +11,7 @@ class Item:
 
     def __init__(self, name: str, price: float, quantity: int) -> None:
         """
-        Создание экземпляра класса item.
+        Создание экземпляра класса Item.
 
         :param name: Название товара.
         :param price: Цена за единицу товара.
@@ -25,13 +25,13 @@ class Item:
 
     def __repr__(self):
         """
-        Отображает информацию об объекте класса для отладки
+        Отображает информацию об объекте класса Item для отладки
         """
         return f"{self.__class__.__name__}('{self.__name}', {self.price}, {self.quantity})"
 
     def __str__(self):
         """
-        Отображает информацию об объекте класса для пользователей
+        Отображает информацию об объекте класса Item для пользователей
         """
         return f'{self.__name}'
 
@@ -71,7 +71,7 @@ class Item:
             for dictionary in reader:
                 cls(
                     dictionary['name'],
-                    Item.string_to_number(dictionary['price']),
+                    float(dictionary['price']),
                     Item.string_to_number(dictionary['quantity'])
                 )
 
@@ -83,3 +83,13 @@ class Item:
         :return: число
         """
         return int(float(string))
+
+    def __add__(self, other):
+        """
+        Складывает по количеству товары в магазине
+        :param other: Другой вид товара
+        :return: Количество складываемых товаров
+        """
+        if not isinstance(other, Item):
+            raise TypeError("Сложение данных объектов невозможно")
+        return self.quantity + other.quantity

@@ -1,6 +1,7 @@
 import pytest
 
 from src.item import Item
+from src.phone import Phone
 
 
 @pytest.fixture
@@ -54,3 +55,16 @@ def test_instantiate_from_csv():
     assert len(Item.all) == 5
     item1 = Item.all[0]
     assert item1.name == 'Смартфон'
+
+
+def test_add():
+    phone1 = Phone("iPhone 14", 120_000, 5, 2)
+    item1 = Item("Смартфон", 10000, 20)
+    assert phone1 + phone1 == 10
+    assert item1 + phone1 == 25
+
+
+def test_add_another_object():
+    phone1 = Phone("iPhone 14", 120_000, 5, 2)
+    with pytest.raises(TypeError):
+        phone1 + 1
