@@ -1,5 +1,6 @@
 import pytest
 
+from src.instantiate_csv_error import InstantiateCSVError
 from src.item import Item
 from src.phone import Phone
 
@@ -55,6 +56,16 @@ def test_instantiate_from_csv():
     assert len(Item.all) == 5
     item1 = Item.all[0]
     assert item1.name == 'Смартфон'
+
+
+def test_instantiate_csv_not_found():
+    Item.instantiate_from_csv('items.csv')
+    assert Item.all == []
+
+
+def test_instantiate_csv_broken():
+    with pytest.raises(InstantiateCSVError):
+        Item.instantiate_from_csv('electronics-shop-project/src/items2.csv')
 
 
 def test_add():
