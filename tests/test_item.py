@@ -52,20 +52,20 @@ def test_string_to_number_not_number():
 
 
 def test_instantiate_from_csv():
-    Item.instantiate_from_csv('electronics-shop-project/src/items.csv')
+    Item.instantiate_from_csv('src/items.csv')
     assert len(Item.all) == 5
     item1 = Item.all[0]
     assert item1.name == 'Смартфон'
 
 
 def test_instantiate_csv_not_found():
-    Item.instantiate_from_csv('items.csv')
-    assert Item.all == []
+    with pytest.raises(FileNotFoundError):
+        Item.instantiate_from_csv('items.csv')
 
 
 def test_instantiate_csv_broken():
     with pytest.raises(InstantiateCSVError):
-        Item.instantiate_from_csv('electronics-shop-project/src/items2.csv')
+        Item.instantiate_from_csv('src/items2.csv')
 
 
 def test_add():
