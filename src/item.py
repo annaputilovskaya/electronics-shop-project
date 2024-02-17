@@ -70,20 +70,24 @@ class Item:
         path = os.path.join('../', csvfile)
         filename = csvfile.split('/')[-1]
         Item.all.clear()
-        try:
+
+        if os.path.exists(path):
             with open(path, newline='', encoding='windows-1251') as file:
                 reader = DictReader(file)
                 for dictionary in reader:
-                    cls(
-                        dictionary['name'],
-                        float(dictionary['price']),
-                        Item.string_to_number(dictionary['quantity'])
-                    )
-        except FileNotFoundError:
-            print(f"Отсутствует файл {filename}")
-        except (TypeError, KeyError):
-            raise InstantiateCSVError(f"Файл {filename} поврежден")
-
+                    name = dictionary.get('name')
+                    price = dictionary.get('price')
+                    quantity = dictionary.get('quantity')
+                    for value in (name, price, quantity):
+                        if value is None:
+                            raise InstantiateCSVError(f"Файл {filename} поврежден")
+                    else:
+                        try:
+                            cls(name, float(price), Item.string_to_number(quantity))
+                        except TypeError:
+                            raise InstantiateCSVError(f"Файл {filename} поврежден")
+        else:
+            raise FileNotFoundError('Отсутствует файл items.csv')
     @staticmethod
     def string_to_number(string) -> int:
         """
