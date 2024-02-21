@@ -1,6 +1,8 @@
 from csv import DictReader
 import os
 
+from src.instantiate_csv_error import InstantiateCSVError
+
 
 class Item:
     """
@@ -66,16 +68,26 @@ class Item:
         :return: None
         """
         path = os.path.join('../', csvfile)
+        filename = csvfile.split('/')[-1]
         Item.all.clear()
-        with open(path, newline='', encoding='windows-1251') as file:
-            reader = DictReader(file)
-            for dictionary in reader:
-                cls(
-                    dictionary['name'],
-                    float(dictionary['price']),
-                    Item.string_to_number(dictionary['quantity'])
-                )
 
+        if os.path.exists(path):
+            with open(path, newline='', encoding='windows-1251') as file:
+                reader = DictReader(file)
+                for dictionary in reader:
+                    name = dictionary.get('name')
+                    price = dictionary.get('price')
+                    quantity = dictionary.get('quantity')
+                    for value in (name, price, quantity):
+                        if value is None:
+                            raise InstantiateCSVError(f"Файл {filename} поврежден")
+                    else:
+                        try:
+                            cls(name, float(price), Item.string_to_number(quantity))
+                        except TypeError:
+                            raise InstantiateCSVError(f"Файл {filename} поврежден")
+        else:
+            raise FileNotFoundError('Отсутствует файл items.csv')
     @staticmethod
     def string_to_number(string) -> int:
         """
